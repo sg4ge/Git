@@ -102,12 +102,16 @@ template<typename T>T heap<T>::delete_min()
 		int child=lchild(n);
 		if(lchild(n)<size&&pelem[rchild(n)]<pelem[lchild(n)])
 			++child;
-		if(pelem[child]<pelem[n])
+		if(pelem[child]<max_elem)
+		{
 			pelem[n]=pelem[child];
+			n=child;
+		}
 		else
 			break;
 	}
 	pelem[n]=max_elem;
+	size--;
 	return min_elem;
 }
 template<typename T>void heap<T>::traverse()
