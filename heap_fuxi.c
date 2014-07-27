@@ -8,8 +8,9 @@ int main()
 		h1.insert(tmp);
 	}
 	cin.clear();
-	heap<int> h2;
-	h2=h1;
-	h1.traverse();
-	h2.traverse();
+	while(!h1.is_empty())
+	{
+		cout<<h1.delete_min()<<"\t";
+	}
+	cout<<endl;
 }
