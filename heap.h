@@ -50,13 +50,17 @@ template<typename T> class heap
 
 template<typename T> heap<T>::heap(int n):size(0),max_size(n)
 {
-	pelem=static_cast<int*>(malloc(sizeof(T)*max_size));
+	pelem=static_cast<int*>(malloc(sizeof(T)*(max_size+1)));
 }
 
 template<typename T> heap<T>::heap(heap<T> &hp):size(hp.size),max_size(hp.max_size)
 {
-	pelem=static_cast<int*>(malloc(sizeof(T)*max_size));
-	memcpy(pelem,hp.pelem,(size+1)*sizeof(T));
+	pelem=static_cast<int*>(malloc(sizeof(T)*(max_size+1)));
+	int i;
+	for(i=1;i!=size+1;++i)
+	{
+		pelem[i]=hp.pelem[i];
+	}
 }
 
 template<typename T> heap<T>& heap<T>::operator=(heap<T>& hp)
