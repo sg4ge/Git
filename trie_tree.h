@@ -21,11 +21,21 @@ class trie_tree
 		{
 			root=new trie_node;
 		}
+		//将一个单词插入树中
 		void insert(const char* word);
+		//找到一个单词出现的频率
 		int find(const char* word);
+		//遍历整棵树，找出所有单词
 		void traverse();
+		~trie_tree()
+		{
+			delete_tree(root);
+		}
 	private:
+		//遍历驱动函数
 		void traverse_driver(trie_node* node,char* word,char* tmp);
+		//删除树
+		void delete_tree(trie_node* node);
 		trie_node* root;
 };
 #endif

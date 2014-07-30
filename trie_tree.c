@@ -51,3 +51,14 @@ void trie_tree::traverse()
 	char word[30];
 	traverse_driver(root,word,word);
 }
+void trie_tree::delete_tree(trie_node* node)
+{
+	if(node==NULL)
+		return;
+	int i;
+	for(i=0;i!=NUMBER_OF_LETTER;i++)
+	{
+		delete_tree(node->childs[i]);
+	}
+	delete node;
+}
