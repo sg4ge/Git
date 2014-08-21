@@ -75,14 +75,56 @@ int bag_01(const element* elements,int n,int weight)
 	return max[weight];
 #endif
 }
-/*int bag_01_backtrack(element* elements,int n,int bag_weight,int* elem_used,int elem_used_num,int total_weight,int total_value)
+
+int bag_complete(const element* elements,int n,int weight)
 {
-	if(elements[elem_used_num].weight+total_weight<bag_weight)
+#if 1
+	int max[weight+1];
+
+	//记录路径
+	int path[n+1][weight+1];
+	int i,j;
+	max[0]=0;
+	for(i=1;i!=weight+1;++i)
 	{
-		elem_used[elem_used_num]=1;
+		max[i]=-1;
 	}
-	else if(elements[elem_used_num])
-}*/
+	for(i=1;i!=n+1;++i)
+	{
+		for(j=1;j!=weight+1;++j)
+		{
+			if(elements[i-1].weight<=j)
+			{
+				if(max[j-elements[i-1].weight]!=-1&&max[j-elements[i-1].weight]+elements[i-1].value>max[j])
+				{
+					max[j]=max[j-elements[i-1].weight]+elements[i-1].value;
+
+					//表示max[j]使用了第i个物品
+					path[i][j]=1;
+				}
+			}
+		}
+	}
+
+	
+	//打印出背包里具体的东西
+	for(i=n,j=weight;j>0;)
+	{
+		if(path[i][j]==1)
+		{
+			j-=elements[i-1].weight;
+			printf("%d\t",elements[i-1].name);
+		}
+		else
+		{
+			--i;
+		}	
+	}
+	puts("");
+
+	return max[weight];
+#endif
+}
 
 
 
@@ -218,6 +260,8 @@ int array_divied(int* arr,int n)
 	}
 	return tmp_sum[avg_n][avg_sum];
 #endif
+
+//分为两个数组，每个数组的个数不限制，使两个数组之和尽量相等
 #if 1
 	int sum=0;
 	int i,j;
@@ -229,23 +273,25 @@ int array_divied(int* arr,int n)
 	int avg_sum=sum/2;
 
 	int path[n+1][avg_sum+1];
+	//tmp_sum[i][j],前i个元素最逼近j的和
 	int tmp_sum[avg_sum+1];
 	for(i=0;i!=avg_sum+1;++i)
 		tmp_sum[i]=0;
 
 	for(i=1;i!=n+1;++i)
 	{
-		for(j=arr[i-1];j<=avg_sum;++j)
+		for(j=avg_sum;j>=arr[i-1];--j)
 		{
 			if(tmp_sum[j-arr[i-1]]+arr[i-1]>tmp_sum[j])
 			{
 				tmp_sum[j]=tmp_sum[j-arr[i-1]]+arr[i-1];
 				path[i][j]=1;
+				//printf("path[%d][%d]\n",i,j);
 			}
 		}
 	}
 
-/*	for(i=n,j=avg_sum;j!=0;--i)
+	for(i=n,j=avg_sum;i!=0;--i)
 	{
 		if(path[i][j]==1)
 		{
@@ -253,7 +299,7 @@ int array_divied(int* arr,int n)
 			j-=arr[i-1];
 		}
 	}
-	*/
+	
 	return tmp_sum[avg_sum];
 #endif
 }

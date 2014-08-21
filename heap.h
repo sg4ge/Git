@@ -1,3 +1,6 @@
+#ifndef HEAP_H
+#define HEAP_H
+
 #include<cstdlib>
 #include<iostream>
 #include<cstring>
@@ -139,3 +142,4 @@ template<typename T>int heap<T>::is_full()
 	else 
 		return 0;
 }
+#endif

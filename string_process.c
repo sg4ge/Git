@@ -127,3 +127,46 @@ void find_matching_string(const char* src,const char* match_str,char* result_str
 	}
 	strncpy(result_str,tmp,1023);
 }
+
+int find_maxsum_sub(const int* src,int src_len,int* sub,int* p_sub_len)
+{
+	int this_sum=0;
+	int max_sum=0;
+	int left=0,right=0,left_tmp;
+	int i,j;
+	for(i=0;i!=src_len;++i)
+	{
+		if(this_sum<=0)
+		{
+			this_sum=src[i];
+			left_tmp=i;
+		}
+		else
+		{
+			this_sum+=src[i];
+		}
+		if(this_sum>max_sum)
+		{
+			max_sum=this_sum;
+			left=left_tmp;
+			right=i;
+		}
+	}
+	if(sub!=NULL&&max_sum)
+	{
+		for(i=left,j=0;i!=right+1;++i,++j)
+		{
+			sub[j]=src[i];
+		}
+	}
+	if(p_sub_len!=NULL)
+	{
+		if(max_sum)
+		*p_sub_len=right-left+1;
+		else
+		*p_sub_len=0;
+	}
+	return max_sum;
+}
+
+
