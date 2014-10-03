@@ -84,10 +84,9 @@ int bag_complete(const element* elements,int n,int weight)
 	//记录路径
 	int path[n+1][weight+1];
 	int i,j;
-	max[0]=0;
-	for(i=1;i!=weight+1;++i)
+	for(i=0;i!=weight+1;++i)
 	{
-		max[i]=-1;
+		max[i]=0;
 	}
 	for(i=1;i!=n+1;++i)
 	{
@@ -95,7 +94,7 @@ int bag_complete(const element* elements,int n,int weight)
 		{
 			if(elements[i-1].weight<=j)
 			{
-				if(max[j-elements[i-1].weight]!=-1&&max[j-elements[i-1].weight]+elements[i-1].value>max[j])
+				if(max[j-elements[i-1].weight]+elements[i-1].value>max[j])
 				{
 					max[j]=max[j-elements[i-1].weight]+elements[i-1].value;
 
@@ -108,7 +107,7 @@ int bag_complete(const element* elements,int n,int weight)
 
 	
 	//打印出背包里具体的东西
-	for(i=n,j=weight;j>0;)
+	for(i=n,j=weight;i>0;)
 	{
 		if(path[i][j]==1)
 		{
@@ -303,3 +302,114 @@ int array_divied(int* arr,int n)
 	return tmp_sum[avg_sum];
 #endif
 }
+
+
+
+
+//安卓手机总解锁方法数量,穷举法
+/**************************************************************
+ 1   2   3
+
+ 4   5   6
+
+ 7   8   9，
+ * *************************************************************/
+#if 1
+void android_unlock_total_driver(int* unlock_arr,int len,int this_len,int* count,int* used)
+{
+	if(this_len==len)
+	{
+		++*count;
+		return;
+	}
+	int i;
+	int flag;
+	for(i=this_len;i!=9;++i)
+	{
+		flag=1;
+		swap(&unlock_arr[this_len],&unlock_arr[i]);
+		used[unlock_arr[this_len]]=1;
+		if(this_len!=0)
+		{
+			if(1==unlock_arr[this_len-1]&&((3==unlock_arr[this_len]&&0==used[2])||(7==unlock_arr[this_len]&&0==used[4])||(9==unlock_arr[this_len]&&0==used[5])))
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+			else if(2==unlock_arr[this_len-1]&&8==unlock_arr[this_len]&&0==used[5])
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+			else if(4==unlock_arr[this_len-1]&&6==unlock_arr[this_len]&&0==used[5])
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+			else if(7==unlock_arr[this_len-1]&&9==unlock_arr[this_len]&&0==used[8])
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+			else if(3==unlock_arr[this_len-1]&&((7==unlock_arr[this_len]&&0==used[5])||(9==unlock_arr[this_len]&&0==used[6])))
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+			else if(9==unlock_arr[this_len-1]&&((1==unlock_arr[this_len]&&0==used[5])||(3==unlock_arr[this_len]&&0==used[6])||(7==unlock_arr[this_len]&&0==used[8])))
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+			else if(6==unlock_arr[this_len-1]&&4==unlock_arr[this_len]&&0==used[5])
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+			else if(8==unlock_arr[this_len-1]&&2==unlock_arr[this_len]&&0==used[5])
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+			else if(3==unlock_arr[this_len-1]&&1==unlock_arr[this_len]&&0==used[2])
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+			else if(7==unlock_arr[this_len-1]&&((1==unlock_arr[this_len]&&0==used[4])||(3==unlock_arr[this_len]&&0==used[5])))
+			{
+				flag=0;
+				printf("this_len-1:%d,this_len:%d\n",unlock_arr[this_len-1],unlock_arr[this_len]);
+			}
+		}
+		if(flag)
+			android_unlock_total_driver(unlock_arr,len,this_len+1,count,used);
+		used[unlock_arr[this_len]]=0;
+		swap(&unlock_arr[this_len],&unlock_arr[i]);
+	}
+}
+#endif
+
+int android_unlock_total()
+{
+	int i,j;
+	int count=0;
+	int unlock_arr[9];
+	int used[10];
+	for(i=0;i!=9;++i)
+	{
+		unlock_arr[i]=i+1;
+	}
+	for(i=4;i!=10;++i)
+	{
+		for(j=0;j!=10;++j)
+		{
+			used[i]=0;
+		}
+		int tmp=0;
+		android_unlock_total_driver(unlock_arr,i,0,&tmp,used);
+		count+=tmp;
+	}
+	return count;
+}
+

@@ -170,3 +170,61 @@ int find_maxsum_sub(const int* src,int src_len,int* sub,int* p_sub_len)
 }
 
 
+/***********************************************************************
+ * 在m个数中选n个，有两种可能：选取当前位，在剩下m-1个中选取n-1个
+ * 或者不选取当前位，在剩下的m-1个中选取n个
+ * **************************************************************************/
+void print_all_combination_driver(const char* src,char* combination,int src_use,int com_use,int candidate,int choose)
+{
+	if(candidate<choose)
+		return;
+	if(choose==0)
+	{
+		//char tmp=combination[com_use];
+		combination[com_use]=0;
+		printf("%s\n",combination);
+		//combination[com_use]=tmp;
+		return;
+	}
+	combination[com_use]=src[src_use];
+	print_all_combination_driver(src,combination,src_use+1,com_use+1,candidate-1,choose-1);
+	print_all_combination_driver(src,combination,src_use+1,com_use,candidate-1,choose);
+}
+void print_all_combination_driver_bit(const char* src,char* combination)
+{
+	int len=strlen(src);
+	int i,j,k;
+	for(i=1;i!=1<<len;++i)
+	{	
+		k=0;
+		for(j=0;j!=len;++j)
+		{
+
+			if(i&1<<j)
+				combination[k++]=src[j];
+		}
+		combination[k]=0;
+		printf("%s\n",combination);
+	}
+}
+void print_all_combination(const char* src)
+{
+#if 1
+	//递归法求解
+	int len=strlen(src);
+	char combination[len+1];
+
+	int i;
+	for(i=1;i!=len+1;++i)
+	{
+		print_all_combination_driver(src,combination,0,0,len,i);
+	}
+#endif
+#if 0
+	//位操作求解
+	int len=strlen(src);
+	char combination[len+1];
+	print_all_combination_driver_bit(src,combination);
+#endif
+}
+
